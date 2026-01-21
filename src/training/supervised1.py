@@ -91,6 +91,8 @@ def train(
                 # ---- INPUT ----
                 modalities = [m.float().to(device) for m in j[0]]
                 labels = j[-1].view(-1).long().to(device)
+                assert labels.min() >= 0 and labels.max() < 2, \
+                f"Invalid labels: min={labels.min()}, max={labels.max()}"
 
                 out = model(modalities)
                 loss = criterion(out, labels)
@@ -117,6 +119,10 @@ def train(
                 for j in valid_dataloader:
                     modalities = [m.float().to(device) for m in j[0]]
                     labels = j[-1].view(-1).long().to(device)
+                    assert labels.min() >= 0 and labels.max() < 2, \
+                    f"Invalid labels: min={labels.min()}, max={labels.max()}"
+
+
 
                     out = model(modalities)
                     loss = criterion(out, labels)
@@ -179,6 +185,8 @@ def single_test(
         for j in test_dataloader:
             modalities = [m.float().to(device) for m in j[0]]
             labels = j[-1].view(-1).long().to(device)
+            assert labels.min() >= 0 and labels.max() < 2, \
+            f"Invalid labels: min={labels.min()}, max={labels.max()}"
 
             out = model(modalities)
 
