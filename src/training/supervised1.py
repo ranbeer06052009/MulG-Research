@@ -90,7 +90,7 @@ def train(
 
                 # ---- INPUT ----
                 modalities = [m.float().to(device) for m in j[0]]
-                labels = j[-1].squeeze(1).long().to(device)
+                labels = j[-1].view(-1).long().to(device)
 
                 out = model(modalities)
                 loss = criterion(out, labels)
@@ -116,7 +116,7 @@ def train(
             with torch.no_grad():
                 for j in valid_dataloader:
                     modalities = [m.float().to(device) for m in j[0]]
-                    labels = j[-1].squeeze(1).long().to(device)
+                    labels = j[-1].view(-1).long().to(device)
 
                     out = model(modalities)
                     loss = criterion(out, labels)
@@ -178,7 +178,7 @@ def single_test(
     with torch.no_grad():
         for j in test_dataloader:
             modalities = [m.float().to(device) for m in j[0]]
-            labels = j[-1].squeeze(1).long().to(device)
+            labels = j[-1].view(-1).long().to(device)
 
             out = model(modalities)
 
